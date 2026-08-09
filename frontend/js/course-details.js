@@ -48,10 +48,40 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
       </div>
 
-      <button style="background: var(--accent-blue); color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 700; cursor: pointer;">
-        Enroll in Course
+      <button id="enrollBtn" style="background: ${course.enrolled ? "#059669" : "var(--accent-blue)"}; color: white; border: none; padding: 12px 24px; border-radius: 8px; font-weight: 700; cursor: pointer;" ${course.enrolled ? "disabled" : ""}>
+        ${course.enrolled ? "Enrolled ✓" : "Enroll in Course"}
       </button>
     `;
+
+    const enrollBtn = document.getElementById("enrollBtn");
+    if (enrollBtn) {
+      enrollBtn.addEventListener("click", async () => {
+        enrollBtn.disabled = true;
+        enrollBtn.textContent = "Enrolling...";
+        try {
+          const res = await fetch(`/api/courses/${courseId}/enroll`, {
+            method: "POST",
+            headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" }
+          });
+          if (res.status === 401) {
+            localStorage.removeItem("jwt_token");
+            window.location.href = "login.html";
+            return;
+          }
+          const data = await res.json();
+          if (res.ok) {
+            enrollBtn.textContent = "Enrolled ✓";
+            enrollBtn.style.background = "#059669";
+          } else {
+            enrollBtn.disabled = false;
+            enrollBtn.textContent = data.message || "Enrollment failed";
+          }
+        } catch (err) {
+          enrollBtn.disabled = false;
+          enrollBtn.textContent = "Retry";
+        }
+      });
+    }
 
   } catch (err) {
     container.innerHTML = `<p class="error-msg">Failed to load course details.</p>`;

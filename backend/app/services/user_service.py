@@ -1,56 +1,103 @@
-"""
-Database Initialization Script for pgAdmin 4 Verification
-Run: python init_db.py
-"""
-from sqlalchemy import select, insert
-from app.db import engine, metadata
-from app.models import users, skills, courses, course_vectors
+import datetime
+from sqlalchemy import select, update
+from app.db import engine
+from app.models import users
+from app.errors import NotFoundError
+from app.services.skill_service import get_user_skills
+from app.services.course_service import get_enrolled_courses
 
-def initialize_database():
-    print("⏳ Creating PostgreSQL tables...")
-    metadata.create_all(engine)
-    print("✅ All tables created successfully!")
+MEMBERSHIP_DURATION_DAYS = 365
 
+
+def _utcnow_naive():
+    return datetime.datetime.now(datetime.timezone.utc).replace(tzinfo=None)
+
+
+def _membership_payload(user):
+    status = (user.membership_status or "active").lower()
+    expires_at = user.membership_expires_at
+
+    effective = status
+    if status != "cancelled":
+        if expires_at and expires_at < _utcnow_naive():
+            effective = "expired"
+        else:
+            effective = "active"
+
+    return {
+        "status": effective,
+        "expires_at": expires_at.isoformat() if expires_at else None
+    }
+
+
+def get_user_by_id(user_id):
     with engine.connect() as conn:
-        # Seed Skills if empty
-        existing_skills = conn.execute(select(skills)).fetchall()
-        if not existing_skills:
-            conn.execute(insert(skills), [
-                {"name": "Python", "description": "High-level programming language for backend and data science."},
-                {"name": "PostgreSQL", "description": "Advanced open-source relational database management system."},
-                {"name": "JavaScript", "description": "Programming language for client-side web applications."},
-                {"name": "FastAPI", "description": "High-performance framework for building APIs with Python."},
-                {"name": "Vector Databases", "description": "Specialized database systems for semantic search & AI embeddings."}
-            ])
-            print("🌱 Seeded initial Skills.")
+        user = conn.execute(select(users).where(users.c.id == user_id)).fetchone()
 
-        # Seed Courses if empty
-        existing_courses = conn.execute(select(courses)).fetchall()
-        if not existing_courses:
-            conn.execute(insert(courses), [
-                {
-                    "title": "Python for High-Performance Backend Systems",
-                    "instructor": "Dr. Sarah Jenkins",
-                    "description": "Master advanced Python features, async programming, REST architecture, and database integrations.",
-                    "skill_requirements": "Python, JavaScript"
-                },
-                {
-                    "title": "PostgreSQL Core Optimization & Schema Migrations",
-                    "instructor": "Alex Rivera",
-                    "description": "Learn deep SQL optimization, index management, transaction controls, and Alembic migration scripts.",
-                    "skill_requirements": "PostgreSQL, Python"
-                },
-                {
-                    "title": "Vector Databases & AI Semantic Search Workflows",
-                    "instructor": "Elena Rostova",
-                    "description": "Understand embeddings, vector distance metrics, similarity queries, and modern AI stack pipelines.",
-                    "skill_requirements": "Vector Databases, Python"
-                }
-            ])
-            print("🌱 Seeded initial Courses.")
+    if not user:
+        raise NotFoundError(f"User with ID {user_id} not found")
 
+    return {
+        "id": user.id,
+        "username": user.username,
+        "email": user.email,
+        "phone": user.phone,
+        "age": user.age,
+        "major": user.major,
+        "created_at": user.created_at.isoformat() if user.created_at else None,
+        "membership": _membership_payload(user),
+        "skills": get_user_skills(user_id),
+        "enrolled_courses": get_enrolled_courses(user_id)
+    }
+
+
+def renew_membership(user_id):
+    with engine.connect() as conn:
+        user = conn.execute(select(users).where(users.c.id == user_id)).fetchone()
+        if not user:
+            raise NotFoundError(f"User with ID {user_id} not found")
+
+        now = _utcnow_naive()
+        expires_at = user.membership_expires_at
+        if expires_at is None or expires_at < now:
+            base = now
+        else:
+            base = expires_at
+        new_expiry = base + datetime.timedelta(days=MEMBERSHIP_DURATION_DAYS)
+
+        conn.execute(
+            update(users)
+            .where(users.c.id == user_id)
+            .values(membership_status="active", membership_expires_at=new_expiry)
+        )
         conn.commit()
-    print("🚀 Database readiness check complete! Check pgAdmin 4 to verify table structure.")
 
-if __name__ == "__main__":
-    initialize_database()
+    return {
+        "message": "Membership renewed successfully",
+        "membership": {
+            "status": "active",
+            "expires_at": new_expiry.isoformat()
+        }
+    }
+
+
+def cancel_membership(user_id):
+    with engine.connect() as conn:
+        user = conn.execute(select(users).where(users.c.id == user_id)).fetchone()
+        if not user:
+            raise NotFoundError(f"User with ID {user_id} not found")
+
+        conn.execute(
+            update(users)
+            .where(users.c.id == user_id)
+            .values(membership_status="cancelled")
+        )
+        conn.commit()
+
+    return {
+        "message": "Membership cancelled",
+        "membership": {
+            "status": "cancelled",
+            "expires_at": None
+        }
+    }

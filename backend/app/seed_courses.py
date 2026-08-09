@@ -1,3 +1,8 @@
+import os
+import sys
+
+sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 from sqlalchemy import select, insert
 from app.db import engine
 from app.models import courses
@@ -32,6 +37,66 @@ SEED_COURSES = [
         "instructor": "David Chen",
         "description": "Construct high-throughput API services using Pydantic models, async endpoints, and Docker deployment.",
         "skill_requirements": "FastAPI, Python, Docker"
+    },
+    {
+        "title": "Data Science & Analytics with Python",
+        "instructor": "Priya Natarajan",
+        "description": "Practical data cleaning, analysis, and visualization workflows using pandas, numpy, and matplotlib.",
+        "skill_requirements": "Python, Machine Learning"
+    },
+    {
+        "title": "Flask API Design & Authentication Patterns",
+        "instructor": "Jonas Weber",
+        "description": "Build production-ready REST APIs with JWT auth, role-based access, and structured error handling in Flask.",
+        "skill_requirements": "Flask & REST API, Python"
+    },
+    {
+        "title": "Modern JavaScript: ES6+, Async Patterns & Fetch",
+        "instructor": "Aisha Bello",
+        "description": "Master modern JavaScript syntax, promises, async/await, and interacting with REST APIs from the browser.",
+        "skill_requirements": "JavaScript, HTML"
+    },
+    {
+        "title": "Docker & Containerized Deployment for Web Apps",
+        "instructor": "Miguel Santos",
+        "description": "Containerize web applications, manage multi-container setups, and deploy services reliably with Docker.",
+        "skill_requirements": "Docker, FastAPI"
+    },
+    {
+        "title": "Semantic Search & RAG with Vector Databases",
+        "instructor": "Elena Rostova",
+        "description": "Build retrieval-augmented generation pipelines using embeddings, vector stores, and hybrid search.",
+        "skill_requirements": "Vector Databases, Machine Learning, Python"
+    },
+    {
+        "title": "Machine Learning Foundations: From Data to Models",
+        "instructor": "Dr. Sarah Jenkins",
+        "description": "Core ML concepts: feature engineering, model selection, evaluation metrics, and bias handling.",
+        "skill_requirements": "Python, Machine Learning"
+    },
+    {
+        "title": "PostgreSQL Performance Tuning & Query Planning",
+        "instructor": "Alex Rivera",
+        "description": "Optimize slow queries with indexes, EXPLAIN analysis, connection pooling, and schema design best practices.",
+        "skill_requirements": "PostgreSQL, SQL"
+    },
+    {
+        "title": "Web Security Essentials for Backend Developers",
+        "instructor": "Fatima Al-Sayed",
+        "description": "Protect your APIs against injection, auth bypasses, and data leaks with secure coding practices.",
+        "skill_requirements": "Flask & REST API, JavaScript"
+    },
+    {
+        "title": "Building Single Page Applications with Vanilla JS",
+        "instructor": "Marcus Vance",
+        "description": "Architect client-side SPAs with routing, state management, and REST consumption using plain JavaScript.",
+        "skill_requirements": "JavaScript, HTML, CSS"
+    },
+    {
+        "title": "High-Performance Async Python & Concurrency",
+        "instructor": "David Chen",
+        "description": "Leverage asyncio, threading, and multiprocessing to build fast, concurrent Python services.",
+        "skill_requirements": "Python, FastAPI"
     }
 ]
 

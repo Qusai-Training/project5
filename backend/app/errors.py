@@ -12,6 +12,7 @@ class APIError(Exception):
     def to_dict(self):
         rv = dict(self.payload or ())
         rv["error"] = self.message
+        rv["message"] = self.message
         rv["status"] = self.status_code
         return rv
 
@@ -41,6 +42,7 @@ def register_error_handlers(app):
     def handle_http_exception(error):
         response = jsonify({
             "error": error.description,
+            "message": error.description,
             "status": error.code
         })
         response.status_code = error.code

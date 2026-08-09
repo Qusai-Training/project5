@@ -1,4 +1,4 @@
-from sqlalchemy import Table, Column, Integer, String, Text, DateTime, ForeignKey, func, ARRAY, Float
+from sqlalchemy import Table, Column, Integer, String, Text, DateTime, ForeignKey, func
 from app.db import metadata
 
 # Users Table
@@ -12,6 +12,8 @@ users = Table(
     Column("phone", String(30), nullable=True),
     Column("age", Integer, nullable=True),
     Column("major", String(100), nullable=True),
+    Column("membership_status", String(20), server_default="active", nullable=False),
+    Column("membership_expires_at", DateTime, nullable=True),
     Column("created_at", DateTime, server_default=func.now()),
     Column("updated_at", DateTime, server_default=func.now(), onupdate=func.now())
 )
@@ -59,6 +61,17 @@ course_vectors = Table(
     Column("id", Integer, primary_key=True, autoincrement=True),
     Column("course_id", Integer, ForeignKey("courses.id", ondelete="CASCADE"), nullable=False),
     Column("embedding_vector", Text, nullable=True),  # Stores vector array or comma-separated embedding strings
+    Column("created_at", DateTime, server_default=func.now()),
+    Column("updated_at", DateTime, server_default=func.now(), onupdate=func.now())
+)
+
+# User_Enrollments Table
+user_enrollments = Table(
+    "user_enrollments",
+    metadata,
+    Column("id", Integer, primary_key=True, autoincrement=True),
+    Column("user_id", Integer, ForeignKey("users.id", ondelete="CASCADE"), nullable=False),
+    Column("course_id", Integer, ForeignKey("courses.id", ondelete="CASCADE"), nullable=False),
     Column("created_at", DateTime, server_default=func.now()),
     Column("updated_at", DateTime, server_default=func.now(), onupdate=func.now())
 )

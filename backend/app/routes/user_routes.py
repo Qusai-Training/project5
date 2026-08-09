@@ -21,3 +21,17 @@ def get_current_user_profile():
     user_id = get_authenticated_user_id()
     user_data = user_service.get_user_by_id(user_id)
     return jsonify(user_data), 200
+
+
+@user_bp.route("/membership/renew", methods=["POST"])
+def renew_membership():
+    """Endpoint: POST /api/users/membership/renew - Renews the user's membership."""
+    user_id = get_authenticated_user_id()
+    return jsonify(user_service.renew_membership(user_id)), 200
+
+
+@user_bp.route("/membership/cancel", methods=["POST"])
+def cancel_membership():
+    """Endpoint: POST /api/users/membership/cancel - Cancels the user's membership."""
+    user_id = get_authenticated_user_id()
+    return jsonify(user_service.cancel_membership(user_id)), 200

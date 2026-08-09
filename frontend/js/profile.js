@@ -1,5 +1,5 @@
 /**
- * PROFILE.JS - Profile Information & User Skills Management
+ * PROFILE.JS - Profile Information, Membership & Password Management
  */
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -16,10 +16,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const infoUsername = document.getElementById("infoUsername");
   const infoEmail = document.getElementById("infoEmail");
 
-  const newSkillsContainer = document.getElementById("newSkillsContainer");
-  const currentSkillsContainer = document.getElementById("currentSkillsContainer");
-  const newSkillsCount = document.getElementById("newSkillsCount");
-  const totalSkillsCount = document.getElementById("totalSkillsCount");
+  const membershipStatus = document.getElementById("membershipStatus");
+  const membershipExpiry = document.getElementById("membershipExpiry");
+  const membershipMessage = document.getElementById("membershipMessage");
+  const renewMembershipBtn = document.getElementById("renewMembershipBtn");
+  const cancelMembershipBtn = document.getElementById("cancelMembershipBtn");
+
+  const changePasswordForm = document.getElementById("changePasswordForm");
+  const changePasswordMessage = document.getElementById("changePasswordMessage");
 
   const mobileMenuToggle = document.getElementById("mobileMenuToggle");
   const navRight = document.getElementById("navRight");
@@ -32,6 +36,56 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function getAuthToken() {
     return localStorage.getItem("jwt_token");
+  }
+
+  function showMessage(element, text, isError) {
+    if (!element) return;
+    element.textContent = text;
+    element.style.color = isError ? "#B91C1C" : "#059669";
+  }
+
+  function formatDate(isoString) {
+    if (!isoString) return "-";
+    const date = new Date(isoString);
+    if (isNaN(date.getTime())) return "-";
+    return date.toLocaleDateString(undefined, { year: "numeric", month: "long", day: "numeric" });
+  }
+
+  function renderMembership(membership) {
+    const status = (membership && membership.status) || "active";
+    membershipStatus.textContent = status.charAt(0).toUpperCase() + status.slice(1);
+    membershipExpiry.textContent = formatDate(membership && membership.expires_at);
+
+    if (status === "cancelled") {
+      membershipStatus.className = "info-value";
+      membershipStatus.style.color = "#B91C1C";
+      renewMembershipBtn.disabled = false;
+      cancelMembershipBtn.disabled = true;
+    } else if (status === "expired") {
+      membershipStatus.className = "info-value";
+      membershipStatus.style.color = "#D97706";
+      renewMembershipBtn.disabled = false;
+      cancelMembershipBtn.disabled = true;
+    } else {
+      membershipStatus.className = "info-value status-active";
+      renewMembershipBtn.disabled = false;
+      cancelMembershipBtn.disabled = false;
+    }
+  }
+
+  async function fetchJSON(url, options) {
+    const token = getAuthToken();
+    const res = await fetch(url, {
+      ...options,
+      headers: { "Authorization": `Bearer ${token}`, "Content-Type": "application/json" }
+    });
+    if (res.status === 401) {
+      localStorage.removeItem("jwt_token");
+      window.location.href = "/login.html";
+      throw new Error("Unauthorized");
+    }
+    const data = await res.json();
+    return { res, data };
   }
 
   // Load User Profile Data
@@ -61,116 +115,99 @@ document.addEventListener("DOMContentLoaded", () => {
         infoName.textContent = fullName;
         infoUsername.textContent = username;
         infoEmail.textContent = user.email || "N/A";
+
+        // Membership
+        renderMembership(user.membership || { status: "active" });
       }
     } catch (err) {
       console.error("Profile load error:", err);
     }
   }
 
-  // Load User Skills Data
-  async function loadUserSkills() {
-    const token = getAuthToken();
-
-    try {
-      const response = await fetch(`${API_BASE}/user/skills`, {
-        headers: { "Authorization": `Bearer ${token}` }
-      });
-
-      if (response.ok) {
-        const skillsData = await response.json();
-        
-        // Filter new skills vs existing skills based on response flags or recent dates
-        const newSkills = skillsData.filter(s => s.is_new === true || s.status === 'acquired_recently');
-        const existingSkills = skillsData.filter(s => !s.is_new && s.status !== 'acquired_recently');
-
-        renderNewSkills(newSkills);
-        renderCurrentSkills(existingSkills);
-      } else {
-        // Fallback sample render if API endpoint is fresh
-        renderSkillsFallback();
+  // Membership actions
+  if (renewMembershipBtn) {
+    renewMembershipBtn.addEventListener("click", async () => {
+      renewMembershipBtn.disabled = true;
+      showMessage(membershipMessage, "Renewing membership...", false);
+      try {
+        const { res, data } = await fetchJSON(`${API_BASE}/users/membership/renew`, { method: "POST", body: "{}" });
+        if (res.ok) {
+          renderMembership(data.membership);
+          showMessage(membershipMessage, data.message || "Membership renewed successfully!", false);
+        } else {
+          showMessage(membershipMessage, data.message || "Could not renew membership.", true);
+        }
+      } catch (err) {
+        showMessage(membershipMessage, "Renewal failed. Please try again.", true);
+      } finally {
+        renewMembershipBtn.disabled = false;
       }
-    } catch (err) {
-      renderSkillsFallback();
-    }
-  }
-
-  function renderNewSkills(skills) {
-    newSkillsContainer.innerHTML = "";
-    newSkillsCount.textContent = `${skills.length} New`;
-
-    if (skills.length === 0) {
-      newSkillsContainer.innerHTML = `<p style="grid-column:1/-1; color:#94A3B8; font-size:0.85rem;">No new skills unlocked this week.</p>`;
-      return;
-    }
-
-    skills.forEach(skill => {
-      const card = document.createElement("div");
-      card.className = "skill-card new-skill-card";
-      card.innerHTML = `
-        <div class="skill-card-top">
-          <span class="skill-name">${skill.name}</span>
-          <span class="tag-new">NEW</span>
-        </div>
-        <div class="skill-level-bar">
-          <div class="skill-level-fill" style="width: ${skill.proficiency || 80}%;"></div>
-        </div>
-        <div class="skill-card-footer">
-          <span>Unlocked recently</span>
-          <span><strong>${skill.proficiency || 80}%</strong></span>
-        </div>
-      `;
-      newSkillsContainer.appendChild(card);
     });
   }
 
-  function renderCurrentSkills(skills) {
-    currentSkillsContainer.innerHTML = "";
-    totalSkillsCount.textContent = `${skills.length} Total`;
-
-    if (skills.length === 0) {
-      currentSkillsContainer.innerHTML = `<p style="grid-column:1/-1; color:#94A3B8; font-size:0.85rem;">No skills registered yet.</p>`;
-      return;
-    }
-
-    skills.forEach(skill => {
-      const card = document.createElement("div");
-      card.className = "skill-card";
-      card.innerHTML = `
-        <div class="skill-card-top">
-          <span class="skill-name">${skill.name}</span>
-          <i class="fa-solid fa-circle-check text-green" style="font-size:0.85rem;"></i>
-        </div>
-        <div class="skill-level-bar">
-          <div class="skill-level-fill" style="width: ${skill.proficiency || 70}%;"></div>
-        </div>
-        <div class="skill-card-footer">
-          <span>Proficiency</span>
-          <span><strong>${skill.proficiency || 70}%</strong></span>
-        </div>
-      `;
-      currentSkillsContainer.appendChild(card);
+  if (cancelMembershipBtn) {
+    cancelMembershipBtn.addEventListener("click", async () => {
+      if (!window.confirm("Are you sure you want to cancel your membership? This cannot be undone.")) {
+        return;
+      }
+      cancelMembershipBtn.disabled = true;
+      showMessage(membershipMessage, "Cancelling membership...", false);
+      try {
+        const { res, data } = await fetchJSON(`${API_BASE}/users/membership/cancel`, { method: "POST", body: "{}" });
+        if (res.ok) {
+          renderMembership(data.membership);
+          showMessage(membershipMessage, data.message || "Membership cancelled.", false);
+        } else {
+          showMessage(membershipMessage, data.message || "Could not cancel membership.", true);
+        }
+      } catch (err) {
+        showMessage(membershipMessage, "Cancellation failed. Please try again.", true);
+      } finally {
+        cancelMembershipBtn.disabled = false;
+      }
     });
   }
 
-  // Fallback helper to populate skills visually
-  function renderSkillsFallback() {
-    const fallbackNew = [
-      { name: "Vector Databases", proficiency: 85, is_new: true },
-      { name: "FastAPI", proficiency: 75, is_new: true }
-    ];
+  // Change password
+  if (changePasswordForm) {
+    changePasswordForm.addEventListener("submit", async (e) => {
+      e.preventDefault();
 
-    const fallbackCurrent = [
-      { name: "Python", proficiency: 95 },
-      { name: "PostgreSQL", proficiency: 88 },
-      { name: "Flask & REST API", proficiency: 90 },
-      { name: "JavaScript", proficiency: 82 }
-    ];
+      const currentPassword = document.getElementById("currentPassword").value;
+      const newPassword = document.getElementById("newPassword").value;
+      const confirmNewPassword = document.getElementById("confirmNewPassword").value;
 
-    renderNewSkills(fallbackNew);
-    renderCurrentSkills(fallbackCurrent);
+      if (!currentPassword || !newPassword || !confirmNewPassword) {
+        showMessage(changePasswordMessage, "Please fill in all password fields.", true);
+        return;
+      }
+      if (newPassword !== confirmNewPassword) {
+        showMessage(changePasswordMessage, "New passwords do not match.", true);
+        return;
+      }
+      if (newPassword.length < 6) {
+        showMessage(changePasswordMessage, "New password must be at least 6 characters long.", true);
+        return;
+      }
+
+      showMessage(changePasswordMessage, "Updating password...", false);
+      try {
+        const { res, data } = await fetchJSON(`${API_BASE}/auth/change-password`, {
+          method: "POST",
+          body: JSON.stringify({ old_password: currentPassword, new_password: newPassword })
+        });
+        if (res.ok) {
+          showMessage(changePasswordMessage, data.message || "Password changed successfully!", false);
+          changePasswordForm.reset();
+        } else {
+          showMessage(changePasswordMessage, data.message || "Could not change password.", true);
+        }
+      } catch (err) {
+        showMessage(changePasswordMessage, "Password change failed. Please try again.", true);
+      }
+    });
   }
 
   // Init
   loadProfile();
-  loadUserSkills();
 });

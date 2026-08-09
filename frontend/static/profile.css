@@ -204,3 +204,69 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* MEMBERSHIP & CHANGE PASSWORD STYLES */
+
+.membership-btn {
+  border: none;
+  border-radius: 8px;
+  padding: 10px 16px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.membership-btn:hover:not(:disabled) {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.membership-btn:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.renew-btn {
+  background: var(--accent-green);
+  color: white;
+}
+
+.cancel-btn {
+  background: #FEE2E2;
+  color: #B91C1C;
+}
+
+.change-password-form {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  max-width: 480px;
+}
+
+.password-form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.password-form-row label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--text-muted);
+  text-transform: uppercase;
+}
+
+.password-form-row input {
+  padding: 10px 12px;
+  border: 1px solid #E2E8F0;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  background: #F8FAFC;
+  outline: none;
+}
+
+.password-form-row input:focus {
+  border-color: var(--accent-blue);
+  background: #FFFFFF;
+}

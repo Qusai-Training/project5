@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Skills - Platform</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="/static/profile.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <!-- Decorative Shapes -->
+  <div class="geo-shape shape-orange"></div>
+  <div class="geo-shape shape-yellow"></div>
+  <div class="geo-shape shape-green"></div>
+
+  <div class="app-canvas">
+    <div class="main-frame">
+
+      <!-- Top Header Navigation -->
+      <header class="top-nav">
+        <div class="nav-left">
+          <a href="/courses.html" class="brand-logo" style="text-decoration:none; color:white;">Skills Utilization Platform</a>
+        </div>
+
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Navigation">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <div class="nav-right" id="navRight">
+          <div class="notification-badge" title="Notifications">
+            <i class="fa-regular fa-bell"></i>
+            <span class="badge-count">12</span>
+          </div>
+          <a href="/profile.html" class="user-profile-pill">
+            <span id="navUsername">Account</span>
+            <div class="avatar-sm" id="navAvatar">U</div>
+          </a>
+        </div>
+      </header>
+
+      <!-- Skills Header Hero -->
+      <section class="dashboard-hero">
+        <div class="hero-user-info">
+          <div class="avatar-container">
+            <div class="avatar-lg" id="skillsAvatar">
+              <i class="fa-solid fa-brain"></i>
+            </div>
+          </div>
+          <div class="user-greeting">
+            <span class="greeting-subtitle">Skills Inventory</span>
+            <h2 id="profileFullName">Loading Skills...</h2>
+            <p id="profileEmail" class="profile-email-sub"></p>
+          </div>
+        </div>
+      </section>
+
+      <!-- Main White Content Card -->
+      <main class="content-card">
+
+        <!-- Navigation Sub-Tabs -->
+        <nav class="sub-tabs">
+          <a href="/courses.html" class="tab-item"><i class="fa-solid fa-graduation-cap"></i> COURSE CATALOG</a>
+          <a href="/recommendations.html" class="tab-item"><i class="fa-solid fa-chart-line"></i> RECOMMENDATIONS</a>
+          <a href="/skills.html" class="tab-item active"><i class="fa-solid fa-trophy"></i> MY SKILLS</a>
+        </nav>
+
+        <!-- Skills Section -->
+        <section class="skills-master-section">
+
+          <!-- Newly Acquired Skills -->
+          <div class="skills-block new-skills-block">
+            <div class="block-header">
+              <h3><i class="fa-solid fa-bolt text-yellow"></i> Newly Acquired Skills</h3>
+              <span class="badge-new-count" id="newSkillsCount">0 New</span>
+            </div>
+            <p class="block-desc">Skills unlocked recently through completed courses and tests.</p>
+
+            <div class="skills-grid" id="newSkillsContainer">
+              <div class="loading-spinner">Loading new skills...</div>
+            </div>
+          </div>
+
+          <!-- Existing / Current Skills -->
+          <div class="skills-block existing-skills-block">
+            <div class="block-header">
+              <h3><i class="fa-solid fa-brain text-blue"></i> Current Skills Inventory</h3>
+              <span class="badge-total-count" id="totalSkillsCount">0 Total</span>
+            </div>
+            <p class="block-desc">Your active tech stack and verified proficiencies.</p>
+
+            <div class="skills-grid" id="currentSkillsContainer">
+              <div class="loading-spinner">Loading current skills...</div>
+            </div>
+          </div>
+
+          <!-- Enrolled Courses -->
+          <div class="skills-block existing-skills-block">
+            <div class="block-header">
+              <h3><i class="fa-solid fa-book-open text-blue"></i> Enrolled Courses</h3>
+              <span class="badge-total-count" id="enrolledCoursesCount">0 Courses</span>
+            </div>
+            <p class="block-desc">Courses you are currently enrolled in.</p>
+
+            <div class="skills-grid" id="enrolledCoursesContainer">
+              <div class="loading-spinner">Loading enrolled courses...</div>
+            </div>
+          </div>
+
+        </section>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="/js/skills.js"></script>
+</body>
+</html>
