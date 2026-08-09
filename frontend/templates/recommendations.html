@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Recommendations - Skills Utilization Platform</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="stylesheet" href="../static/courses.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+  <div class="app-canvas">
+    <!-- Floating Dock -->
+    <aside class="floating-dock">
+      <a href="courses.html" class="dock-btn"><i class="fa-solid fa-book"></i></a>
+      <a href="recommendations.html" class="dock-btn active"><i class="fa-solid fa-wand-magic-sparkles"></i></a>
+      <a href="profile.html" class="dock-btn"><i class="fa-solid fa-user-gear"></i></a>
+    </aside>
+
+    <div class="main-frame">
+      <header class="top-nav">
+        <div class="nav-left">
+          <div class="brand-logo">rh+</div>
+        </div>
+        <div class="user-profile-pill">
+          <span id="navUsername">User</span>
+          <div class="avatar-sm" id="navAvatar">U</div>
+        </div>
+      </header>
+
+      <main class="content-card">
+        <nav class="sub-tabs">
+          <a href="courses.html" class="tab-item"><i class="fa-solid fa-graduation-cap"></i> COURSE CATALOG</a>
+          <a href="recommendations.html" class="tab-item active"><i class="fa-solid fa-chart-line"></i> RECOMMENDATIONS</a>
+          <a href="profile.html" class="tab-item"><i class="fa-solid fa-trophy"></i> MY SKILLS</a>
+        </nav>
+
+        <section class="recommendation-header" style="margin-bottom: 20px;">
+          <h2>Smart Vector-Matched Courses</h2>
+          <p style="color: var(--text-muted); font-size:0.9rem;">
+            Calculated based on your registered skill profile and learning history.
+          </p>
+        </section>
+
+        <!-- Vector Recommendations Container -->
+        <div id="recommendationsGrid" class="courses-grid">
+          <div class="loading-spinner">Generating tailored recommendations...</div>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <script src="../js/recommendations.js"></script>
+</body>
+</html>

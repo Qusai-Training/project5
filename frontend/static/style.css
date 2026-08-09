@@ -1,0 +1,334 @@
+/* GLOBAL THEME & VISUAL STYLE */
+:root {
+  --bg-purple: #333887;
+  --bg-dark-purple: #282B70;
+  --nav-pill-bg: rgba(255, 255, 255, 0.15);
+  --card-bg: #FFFFFF;
+  --text-dark: #1E2340;
+  --text-muted: #6C7293;
+  --text-light: #FFFFFF;
+  --accent-blue: #4F46E5;
+  --accent-pink: #FF4757;
+  --accent-green: #2ED573;
+  --accent-yellow: #FFBE21;
+  --border-radius-lg: 20px;
+  --border-radius-sm: 8px;
+  --shadow-main: 0 16px 40px rgba(0, 0, 0, 0.25);
+  --font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  font-family: var(--font-family);
+}
+
+body {
+  background: radial-gradient(circle at 50% 20%, #3B419B 0%, var(--bg-purple) 60%, var(--bg-dark-purple) 100%);
+  background-attachment: fixed;
+  color: var(--text-dark);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 30px 20px;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Background Geometric Shapes */
+.geo-shape {
+  position: fixed;
+  z-index: 0;
+  pointer-events: none;
+}
+
+.shape-orange {
+  width: 130px;
+  height: 130px;
+  background: #FF6B4A;
+  border-radius: 130px 130px 0 0;
+  top: 280px;
+  left: 20px;
+  transform: rotate(-90deg);
+}
+
+.shape-yellow {
+  width: 140px;
+  height: 140px;
+  background: var(--accent-yellow);
+  border-radius: 50%;
+  top: -40px;
+  right: 180px;
+}
+
+.shape-green {
+  width: 120px;
+  height: 120px;
+  background: #10B981;
+  border-radius: 120px 120px 0 0;
+  bottom: 80px;
+  right: 40px;
+}
+
+/* App Canvas Wrapper */
+.app-canvas {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  max-width: 1140px;
+}
+
+/* Main Workspace */
+.main-frame {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+
+/* Top Navigation Bar */
+.top-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-light);
+  padding: 4px 0;
+}
+
+.nav-left {
+  display: flex;
+  align-items: center;
+}
+
+.brand-logo {
+  font-size: 1.8rem;
+  font-weight: 800;
+  letter-spacing: -0.5px;
+  color: #FFFFFF;
+}
+
+.nav-right {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.notification-badge {
+  position: relative;
+  cursor: pointer;
+  font-size: 1.1rem;
+  color: #FFFFFF;
+}
+
+.badge-count {
+  position: absolute;
+  top: -6px;
+  right: -8px;
+  background: #38BDF8;
+  color: #0F172A;
+  font-weight: 800;
+  font-size: 0.65rem;
+  padding: 2px 5px;
+  border-radius: 10px;
+}
+
+.user-profile-pill {
+  background: var(--nav-pill-bg);
+  padding: 4px 6px 4px 16px;
+  border-radius: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.88rem;
+  color: #FFFFFF;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.25);
+}
+
+.avatar-sm {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: #FB923C;
+  color: #FFFFFF;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+/* Dashboard Hero */
+.dashboard-hero {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-light);
+  padding: 6px 0;
+}
+
+.hero-user-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.avatar-lg {
+  width: 68px;
+  height: 68px;
+  border-radius: 50%;
+  background: #FEF08A;
+  border: 3px dashed #38BDF8;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.8rem;
+  color: #1E293B;
+}
+
+.user-greeting .greeting-subtitle {
+  font-size: 0.8rem;
+  opacity: 0.8;
+  display: block;
+}
+
+.user-greeting h2 {
+  font-size: 1.55rem;
+  font-weight: 700;
+}
+
+.quick-shortcuts {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 6px;
+}
+
+.shortcuts-title {
+  font-size: 0.75rem;
+  opacity: 0.75;
+}
+
+.shortcuts-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.shortcut-card {
+  background: var(--nav-pill-bg);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 8px 16px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: #FFFFFF;
+  backdrop-filter: blur(6px);
+}
+
+.shortcut-add-btn {
+  background: var(--nav-pill-bg);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+/* Translucent Announcement Banner */
+.announcement-banner {
+  background: rgba(255, 255, 255, 0.18);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 14px;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: var(--text-light);
+  backdrop-filter: blur(8px);
+}
+
+.banner-text {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  font-size: 0.9rem;
+}
+
+.banner-cta-btn {
+  background: #FFFFFF;
+  color: var(--bg-purple);
+  padding: 9px 18px;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 800;
+  font-size: 0.78rem;
+  letter-spacing: 0.5px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* Main White Card Container */
+.content-card {
+  background: var(--card-bg);
+  border-radius: var(--border-radius-lg);
+  padding: 28px;
+  box-shadow: var(--shadow-main);
+  min-height: 520px;
+}
+
+/* Sub-Tabs */
+.sub-tabs {
+  display: flex;
+  justify-content: center;
+  gap: 36px;
+  border-bottom: 2px solid #F1F5F9;
+  padding-bottom: 14px;
+  margin-bottom: 24px;
+}
+
+.tab-item {
+  text-decoration: none;
+  color: #94A3B8;
+  font-weight: 800;
+  font-size: 0.88rem;
+  letter-spacing: 0.5px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  position: relative;
+  padding-bottom: 12px;
+}
+
+.tab-item.active {
+  color: var(--bg-purple);
+}
+
+.tab-item.active::after {
+  content: "";
+  position: absolute;
+  bottom: -16px;
+  left: 0;
+  width: 100%;
+  height: 4px;
+  background: var(--bg-purple);
+  border-radius: 4px;
+}
+
+.mobile-menu-toggle {
+  display: none;
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.text-pink { color: var(--accent-pink); }
+.text-blue { color: #38BDF8; }
+.text-green { color: var(--accent-green); }

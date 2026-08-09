@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Course Catalog - Skills Utilization Platform</title>
+  <!-- Absolute static paths -->
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="/static/courses.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body>
+
+  <!-- Decorative Geometric Shapes -->
+  <div class="geo-shape shape-orange"></div>
+  <div class="geo-shape shape-yellow"></div>
+  <div class="geo-shape shape-green"></div>
+
+  <!-- Main Canvas Container -->
+  <div class="app-canvas">
+
+    <!-- Main Workspace Area -->
+    <div class="main-frame">
+
+      <!-- Top Header Navigation -->
+      <header class="top-nav">
+        <div class="nav-left">
+          <a href="/courses.html" class="brand-logo" style="text-decoration:none; color:white;">rh+</a>
+        </div>
+
+        <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Navigation">
+          <i class="fa-solid fa-bars"></i>
+        </button>
+
+        <div class="nav-right" id="navRight">
+          <div class="notification-badge" title="Notifications">
+            <i class="fa-regular fa-bell"></i>
+            <span class="badge-count">12</span>
+          </div>
+          <!-- Clicking this opens profile.html directly -->
+          <a href="/profile.html" class="user-profile-pill">
+            <span id="navUsername">Account</span>
+            <div class="avatar-sm" id="navAvatar">U</div>
+          </a>
+        </div>
+      </header>
+
+
+      <!-- Dashboard Hero Area -->
+      <section class="dashboard-hero">
+        <div class="hero-user-info">
+          <div class="avatar-container">
+            <div class="avatar-lg" id="heroAvatar">
+              <i class="fa-solid fa-user"></i>
+            </div>
+          </div>
+          <div class="user-greeting">
+            <span class="greeting-subtitle">Welcome back</span>
+            <h2 id="userGreetingName">Loading user...</h2>
+          </div>
+        </div>
+
+        <!-- Quick Access Shortcuts -->
+        <div class="quick-shortcuts">
+          <span class="shortcuts-title">My Shortcuts</span>
+          <div class="shortcuts-group">
+            <div class="shortcut-card">
+              <i class="fa-solid fa-code text-pink"></i>
+              <span>Python Skills</span>
+            </div>
+            <div class="shortcut-card">
+              <i class="fa-solid fa-database text-blue"></i>
+              <span>PostgreSQL</span>
+            </div>
+            <div class="shortcut-card">
+              <i class="fa-solid fa-brain text-green"></i>
+              <span>Vectors</span>
+            </div>
+            <button class="shortcut-add-btn" title="Add Shortcut">+</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Translucent Announcement Banner -->
+      <div class="announcement-banner">
+        <div class="banner-text">
+          <i class="fa-regular fa-clock"></i>
+          <span>Next AI Skill Recommendation update in <strong>12 hrs 27 mins</strong>!</span>
+        </div>
+        <a href="/recommendations.html" class="banner-cta-btn">VIEW RECOMMENDATIONS</a>
+      </div>
+
+      <!-- Main White Content Card -->
+      <main class="content-card">
+
+        <!-- Navigation Sub-Tabs -->
+        <nav class="sub-tabs">
+          <a href="/courses.html" class="tab-item active"><i class="fa-solid fa-graduation-cap"></i> COURSE CATALOG</a>
+          <a href="/recommendations.html" class="tab-item"><i class="fa-solid fa-chart-line"></i> RECOMMENDATIONS</a>
+          <a href="/profile.html" class="tab-item"><i class="fa-solid fa-trophy"></i> MY SKILLS</a>
+        </nav>
+
+        <!-- Search & Filter Controls -->
+        <section class="filter-controls">
+          <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" id="searchInput" placeholder="Search by course title or keyword...">
+          </div>
+
+          <div class="filter-dropdowns">
+            <select id="skillFilter" class="custom-select">
+              <option value="">All Required Skills</option>
+            </select>
+
+            <select id="sortFilter" class="custom-select">
+              <option value="newest">Newest First</option>
+              <option value="title">Alphabetical</option>
+            </select>
+          </div>
+        </section>
+
+        <!-- Dynamic Course Cards Grid -->
+        <section class="courses-grid" id="coursesGrid">
+          <div class="loading-spinner">Loading course catalog...</div>
+        </section>
+
+        <!-- Pagination Controls -->
+        <div class="pagination-bar" id="paginationBar">
+          <button class="page-btn" id="prevPageBtn" disabled>&leftarrow; Previous</button>
+          <span class="page-info" id="pageInfo">Page 1</span>
+          <button class="page-btn" id="nextPageBtn">Next &rightarrow;</button>
+        </div>
+
+      </main>
+    </div>
+  </div>
+
+  <script src="/js/courses.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Register - Skills Utilization Platform</title>
+  <link rel="stylesheet" href="/static/style.css">
+  <link rel="stylesheet" href="/static/auth.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="auth-body">
+
+  <div class="auth-card auth-card-wide">
+    <div class="auth-header">
+      <div class="brand-logo">rh+</div>
+      <h2>Create Your Account</h2>
+      <p>Join to discover learning paths matched to your skills</p>
+    </div>
+
+    <form id="registerForm" class="auth-form">
+      <div id="authAlert" class="auth-alert hidden"></div>
+
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label for="regUsername">Username</label>
+          <input type="text" id="regUsername" placeholder="johndoe" required>
+        </div>
+
+        <div class="form-group">
+          <label for="regEmail">Email Address</label>
+          <input type="email" id="regEmail" placeholder="john@example.com" required>
+        </div>
+      </div>
+
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label for="regPassword">Password</label>
+          <input type="password" id="regPassword" placeholder="••••••••" required>
+        </div>
+
+        <div class="form-group">
+          <label for="regPhone">Phone Number</label>
+          <input type="tel" id="regPhone" placeholder="+1234567890">
+        </div>
+      </div>
+
+      <div class="form-grid-2">
+        <div class="form-group">
+          <label for="regAge">Age</label>
+          <input type="number" id="regAge" min="15" max="100" placeholder="22">
+        </div>
+
+        <div class="form-group">
+          <label for="regMajor">Academic Major</label>
+          <input type="text" id="regMajor" placeholder="Computer Science">
+        </div>
+      </div>
+
+      <div class="form-group">
+        <label>Select Initial Skills</label>
+        <div class="skills-selection-box" id="skillsContainer">
+          <span class="loading-text">Loading available skills...</span>
+        </div>
+      </div>
+
+      <button type="submit" class="auth-submit-btn">
+        <span>Create Account</span>
+        <i class="fa-solid fa-user-plus"></i>
+      </button>
+
+      <div class="auth-footer">
+        <p>Already have an account? <a href="login.html">Log In</a></p>
+      </div>
+    </form>
+  </div>
+
+  <script src="/js/auth.js"></script>
+</body>
+</html>
