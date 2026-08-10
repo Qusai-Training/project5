@@ -28,6 +28,18 @@ document.addEventListener("DOMContentLoaded", () => {
   const mobileMenuToggle = document.getElementById("mobileMenuToggle");
   const navRight = document.getElementById("navRight");
 
+  // Exit / Logout Button Element
+  const logoutBtn = document.getElementById("logoutBtn");
+
+  const mobileMenuToggle = document.getElementById("mobileMenuToggle");
+  const navRight = document.getElementById("navRight");
+
+  if (mobileMenuToggle) {
+    mobileMenuToggle.addEventListener("click", () => {
+      navRight.classList.toggle("active");
+    });
+  }
+
   if (mobileMenuToggle) {
     mobileMenuToggle.addEventListener("click", () => {
       navRight.classList.toggle("active");

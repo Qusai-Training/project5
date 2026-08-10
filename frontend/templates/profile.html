@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
   <link rel="stylesheet" href="/static/profile.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
+
 <body>
 
   <!-- Decorative Shapes -->
@@ -21,7 +23,8 @@
       <!-- Top Header Navigation -->
       <header class="top-nav">
         <div class="nav-left">
-          <a href="/courses.html" class="brand-logo" style="text-decoration:none; color:white;">Skills Utilization Platform</a>
+          <a href="/courses.html" class="brand-logo" style="text-decoration:none; color:white;">Skills Utilization
+            Platform</a>
         </div>
 
         <button class="mobile-menu-toggle" id="mobileMenuToggle" aria-label="Toggle Navigation">
@@ -38,6 +41,8 @@
             <span id="navUsername">Account</span>
             <div class="avatar-sm" id="navAvatar">U</div>
           </a>
+          <!-- Added Exit/Logout Button -->
+
         </div>
       </header>
 
@@ -133,15 +138,28 @@
               <label for="confirmNewPassword">Confirm New Password</label>
               <input type="password" id="confirmNewPassword" autocomplete="new-password">
             </div>
-            <button type="submit" class="membership-btn renew-btn" style="align-self:flex-start;">Update Password</button>
-            <p class="block-desc" id="changePasswordMessage" style="margin-top:10px; margin-bottom:0;"></p>
+
+            <!-- Action Buttons Row: Update Password & Exit Account -->
+            <div style="display: flex; gap: 10px; align-items: center; align-self: flex-start; margin-top: 8px;">
+              <button type="submit" class="membership-btn renew-btn">Update Password</button>
+              <button type="button" id="logoutBtn" class="membership-btn cancel-btn" style="cursor: pointer;">
+                <i class="fa-solid fa-right-from-bracket"></i> Exit Account
+              </button>
+            </div>
+
+
           </form>
+
         </section>
 
       </main>
+
+
     </div>
   </div>
 
   <script src="/js/profile.js"></script>
+ 
 </body>
+
 </html>

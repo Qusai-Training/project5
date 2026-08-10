@@ -56,3 +56,14 @@ def change_password():
         new_password=data.get("new_password")
     )
     return jsonify(result), 200
+
+@auth_bp.route("/logout", methods=["POST"])
+def logout():
+    """Endpoint: POST /api/auth/logout - Invalidates current user session/token."""
+    auth_header = request.headers.get("Authorization")
+    if not auth_header or not auth_header.startswith("Bearer "):
+        raise UnauthorizedError("Authorization bearer token is missing")
+
+    token = auth_header.split(" ")[1]
+    result = auth_service.logout_user(token)
+    return jsonify(result), 200
