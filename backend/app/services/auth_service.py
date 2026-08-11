@@ -20,8 +20,10 @@ def _validate_registration(username, email, password, phone, age):
         raise APIError("Please provide a valid email address (must contain @ and .)", status_code=400)
     if not password or len(str(password)) < 6:
         raise APIError("Password must be at least 6 characters long", status_code=400)
-    if phone is not None and str(phone).strip() != "" and not re.fullmatch(r"[0-9]+", str(phone).strip()):
-        raise APIError("Phone number must contain digits only", status_code=400)
+    if phone is not None and str(phone).strip() != "":
+        phone_str = str(phone).strip()
+        if not re.fullmatch(r"^\+962\d{9}$", phone_str):
+            raise APIError("Phone number must start with +962 followed by exactly 9 digits", status_code=400)
     if age is not None and str(age).strip() != "":
         try:
             age_value = int(age)

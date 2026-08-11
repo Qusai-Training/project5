@@ -71,6 +71,25 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   }
 
+  // Phone input handling for +962 prefix and 9 digits restriction
+  const regPhoneInput = document.getElementById("regPhone");
+  if (regPhoneInput) {
+    regPhoneInput.addEventListener("focus", () => {
+      if (!regPhoneInput.value.startsWith("+962")) {
+        regPhoneInput.value = "+962";
+      }
+    });
+
+    regPhoneInput.addEventListener("input", () => {
+      if (!regPhoneInput.value.startsWith("+962")) {
+        regPhoneInput.value = "+962";
+      }
+      
+      const digits = regPhoneInput.value.slice(4).replace(/\D/g, "").slice(0, 9);
+      regPhoneInput.value = "+962" + digits;
+    });
+  }
+
   // Handle User Registration
   if (registerForm) {
     loadSkillsForRegistration();

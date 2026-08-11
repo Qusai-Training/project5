@@ -31,18 +31,18 @@ document.addEventListener("DOMContentLoaded", () => {
   // Exit / Logout Button Element
   const logoutBtn = document.getElementById("logoutBtn");
 
-  const mobileMenuToggle = document.getElementById("mobileMenuToggle");
-  const navRight = document.getElementById("navRight");
-
+  // Mobile Menu Toggle Event
   if (mobileMenuToggle) {
     mobileMenuToggle.addEventListener("click", () => {
       navRight.classList.toggle("active");
     });
   }
 
-  if (mobileMenuToggle) {
-    mobileMenuToggle.addEventListener("click", () => {
-      navRight.classList.toggle("active");
+  // Handle Logout / Exit Button Click
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("jwt_token");
+      window.location.href = "login.html";
     });
   }
 
@@ -102,6 +102,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Load User Profile Data
   async function loadProfile() {
+    // Set initial loading placeholders
+    if (navUsername) navUsername.textContent = "Loading...";
+    if (navAvatar) navAvatar.textContent = "...";
+    if (profileAvatar) profileAvatar.textContent = "...";
+    if (profileFullName) profileFullName.textContent = "Loading...";
+    if (profileEmail) profileEmail.textContent = "Loading...";
+    if (infoName) infoName.textContent = "Loading...";
+    if (infoUsername) infoUsername.textContent = "Loading...";
+    if (infoEmail) infoEmail.textContent = "Loading...";
+    if (membershipStatus) membershipStatus.textContent = "Loading...";
+    if (membershipExpiry) membershipExpiry.textContent = "Loading...";
+
     const token = getAuthToken();
 
     try {
@@ -130,9 +142,12 @@ document.addEventListener("DOMContentLoaded", () => {
 
         // Membership
         renderMembership(user.membership || { status: "active" });
+      } else {
+        if (profileFullName) profileFullName.textContent = "Failed to load profile";
       }
     } catch (err) {
       console.error("Profile load error:", err);
+      if (profileFullName) profileFullName.textContent = "Error loading profile";
     }
   }
 
